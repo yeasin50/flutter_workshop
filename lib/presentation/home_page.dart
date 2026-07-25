@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:state_management_example_yt/providers/mock_data_repo.dart';
+import '/providers/mock_data_repo.dart';
 
 import '../models/item.dart';
 import './profile_page.dart';
@@ -74,7 +74,7 @@ class ItemListView extends StatelessWidget {
                 mainAxisSize: .min,
                 children: [
                   Icon(Icons.shopping_basket_outlined),
-                  Text("3"),
+                  Text("3"), //TODO: update total cart ite
                 ],
               ),
             ),
@@ -88,7 +88,7 @@ class ItemListView extends StatelessWidget {
               mainAxisSpacing: 16,
               crossAxisSpacing: 16,
             ),
-            itemCount: mockItems.length,
+            itemCount: mockItems.length, //TODO: replace with repo
             itemBuilder: (context, index) {
               final item = mockItems[index];
               return ItemView(item: item, onAdd: () {});

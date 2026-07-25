@@ -15,7 +15,6 @@ class User {
   final String address;
   final bool isDark;
 
-  // Fixed the static instance with all required fields
   static const User ui = User(
     id: 'u_000',
     name: 'Rose',
@@ -31,7 +30,6 @@ class User {
   }
 }
 
-// 5 verified mock users with stable image URLs
 final List<User> mockUserList = [
   User(
     id: 'u_001',

@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 import 'presentation/home_page.dart';
+import 'presentation/login_page.dart';
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
@@ -12,7 +13,7 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       scrollBehavior: ScrollBehavior().copyWith(dragDevices: PointerDeviceKind.values.toSet()),
-      home: HomePage(),
+      home: LoginPage(),
     );
   }
 }

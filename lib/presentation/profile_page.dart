@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
+import './login_page.dart';
 import '../models/user.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -8,27 +9,47 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = User.ui;
+    final user = User.ui; //TODO: replace from login
+
     final textStyle = TextTheme.of(context);
     return Material(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        spacing: 12,
-        children: [
-          AppBar(title: const Text("Profile")),
-          CircleAvatar(radius: 45, backgroundImage: CachedNetworkImageProvider(user.avatar)),
-          Text(user.name, style: textStyle.headlineSmall, textAlign: TextAlign.center),
-          Text(
-            user.email,
-            style: textStyle.bodyMedium?.copyWith(color: Colors.grey),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 8),
-          ListTile(leading: const Icon(Icons.location_on), title: const Text("Address"), subtitle: Text(user.address)),
-          ListTile(leading: const Icon(Icons.badge), title: const Text("User ID"), subtitle: Text(user.id)),
-          const Divider(),
-          const ThemeSwitcher(),
-        ],
+      child: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          spacing: 12,
+          children: [
+            AppBar(
+              title: const Text("Profile"),
+              actionsPadding: EdgeInsetsGeometry.only(right: 24),
+              actions: [
+                IconButton(
+                  onPressed: () {
+                    //TODO: Logout call
+                    final route = MaterialPageRoute(builder: (context) => LoginPage());
+                    Navigator.of(context).pushReplacement(route);
+                  },
+                  icon: Icon(Icons.logout),
+                ),
+              ],
+            ),
+            CircleAvatar(radius: 45, backgroundImage: CachedNetworkImageProvider(user.avatar)),
+            Text(user.name, style: textStyle.headlineSmall, textAlign: TextAlign.center),
+            Text(
+              user.email,
+              style: textStyle.bodyMedium?.copyWith(color: Colors.grey),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 8),
+            ListTile(
+              leading: const Icon(Icons.location_on),
+              title: const Text("Address"),
+              subtitle: Text(user.address),
+            ),
+            ListTile(leading: const Icon(Icons.badge), title: const Text("User ID"), subtitle: Text(user.id)),
+            const Divider(),
+            const ThemeSwitcher(),
+          ],
+        ),
       ),
     );
   }
@@ -54,6 +75,7 @@ class _ThemeSwitcherState extends State<ThemeSwitcher> {
               setState(() {
                 isDark = !isDark;
               });
+              //TODO: switch theme
             },
             icon: Icon(isDark ? Icons.light_mode : Icons.dark_mode),
           ),

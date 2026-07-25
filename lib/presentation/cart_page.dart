@@ -26,6 +26,7 @@ class _CartPageState extends State<CartPage> {
           crossAxisSpacing: 16,
         ),
         itemBuilder: (context, index) {
+          //TODO: update with cart items
           final items = [
             ...mockItems.sublist(5),
             ...mockItems.sublist(5).map((e) => e.copyWith(quantity: index)),
