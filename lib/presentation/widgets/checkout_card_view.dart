@@ -17,7 +17,7 @@ class CheckoutCardView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Colors.greenAccent.shade200,
+      color: Colors.greenAccent.withAlpha(10),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
         child: Column(
@@ -40,11 +40,6 @@ class CheckoutCardView extends StatelessWidget {
               ],
             ),
             ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.black,
-                foregroundColor: Colors.white,
-                fixedSize: Size.fromHeight(48),
-              ),
               onPressed: () {},
               child: Text("Buy now"),
             ),

@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:state_management_example_yt/providers/theme_switcher.dart';
 
 import '../models/user.dart';
 import '../providers/auth_service.dart';
@@ -21,11 +22,15 @@ class MainApp extends StatelessWidget {
       providers: [
         Provider(create: (context) => MockDataRepo()),
         Provider(create: (context) => AuthService(context.read<MockDataRepo>())),
+        ListenableProvider(create: (context) => ThemeSwitcher()),
       ],
       builder: (context, _) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           scrollBehavior: ScrollBehavior().copyWith(dragDevices: PointerDeviceKind.values.toSet()),
+          themeMode: context.watch<ThemeSwitcher>().value,
+          theme: ThemeData.light(),
+          darkTheme: ThemeData.dark(),
           home: StreamProvider<User?>(
             initialData: null,
             create: (_) => context.read<AuthService>().authStateChanges,

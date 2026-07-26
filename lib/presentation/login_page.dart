@@ -54,11 +54,6 @@ class _LoginPageState extends State<LoginPage> {
               Icon(Icons.shop, size: 214, color: Colors.blueGrey.shade300),
               TextFormField(controller: pinController),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  backgroundColor: Colors.black,
-                  fixedSize: Size.fromHeight(48),
-                ),
                 onPressed: isValid && !isLoading ? login : null,
                 child: isLoading ? CircularProgressIndicator() : Text("Login"),
               ),

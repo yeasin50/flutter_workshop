@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../providers/auth_service.dart';
 import '../models/user.dart';
+import '../providers/theme_switcher.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -46,7 +47,7 @@ class ProfilePage extends StatelessWidget {
             ),
             ListTile(leading: const Icon(Icons.badge), title: const Text("User ID"), subtitle: Text(user.id)),
             const Divider(),
-            const ThemeSwitcher(),
+            const ThemeSwitcherView(),
           ],
         ),
       ),
@@ -54,32 +55,32 @@ class ProfilePage extends StatelessWidget {
   }
 }
 
-class ThemeSwitcher extends StatefulWidget {
-  const ThemeSwitcher({super.key});
+class ThemeSwitcherView extends StatefulWidget {
+  const ThemeSwitcherView({super.key});
 
   @override
-  State<ThemeSwitcher> createState() => _ThemeSwitcherState();
+  State<ThemeSwitcherView> createState() => _ThemeSwitcherViewState();
 }
 
-class _ThemeSwitcherState extends State<ThemeSwitcher> {
-  bool isDark = false;
+class _ThemeSwitcherViewState extends State<ThemeSwitcherView> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ListTile(
-          title: Text("switch to ${isDark ? "light" : "dark"}"),
-          trailing: IconButton(
-            onPressed: () {
-              setState(() {
-                isDark = !isDark;
-              });
-              //TODO: switch theme
-            },
-            icon: Icon(isDark ? Icons.light_mode : Icons.dark_mode),
-          ),
-        ),
-      ],
+    return ValueListenableBuilder(
+      valueListenable: context.read<ThemeSwitcher>(),
+      builder: (context, data, ch) {
+        final bool isDark = data == ThemeMode.dark;
+        return Column(
+          children: [
+            ListTile(
+              title: Text("switch to ${isDark ? "light" : "dark"}"),
+              trailing: IconButton(
+                onPressed: context.read<ThemeSwitcher>().toggle,
+                icon: Icon(isDark ? Icons.light_mode : Icons.dark_mode),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
