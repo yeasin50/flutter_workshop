@@ -1,4 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:state_management_example_yt/presentation/product_search_page.dart';
+import 'package:state_management_example_yt/presentation/widgets/search_field.dart';
 import '/providers/mock_data_repo.dart';
 
 import '../models/item.dart';
@@ -79,6 +82,13 @@ class ItemListView extends StatelessWidget {
               ),
             ),
           ],
+        ),
+        SearchField(
+          onTap: (query) {
+            // TODO: navigate & search  with `value`
+            final route = ProductSearchPage.route(query);
+            Navigator.of(context).push(route);
+          },
         ),
         Expanded(
           child: GridView.builder(
