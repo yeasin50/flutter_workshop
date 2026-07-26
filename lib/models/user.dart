@@ -28,11 +28,33 @@ class User {
   String toString() {
     return 'User(id: $id, name: $name, email: $email, isDark: $isDark, address: $address)';
   }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        other is User &&
+            id == other.id &&
+            name == other.name &&
+            email == other.email &&
+            avatar == other.avatar &&
+            address == other.address &&
+            isDark == other.isDark;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    name,
+    email,
+    avatar,
+    address,
+    isDark,
+  );
 }
 
 final List<User> mockUserList = [
   User(
-    id: 'u_001',
+    id: '1',
     name: 'Eleanor Shellstrop',
     email: 'eleanor@example.com',
     avatar: 'https://randomuser.me/api/portraits/women/68.jpg',
@@ -40,7 +62,7 @@ final List<User> mockUserList = [
     isDark: true,
   ),
   User(
-    id: 'u_002',
+    id: '2',
     name: 'Chidi Anagonye',
     email: 'chidi.a@example.com',
     avatar: 'https://randomuser.me/api/portraits/men/32.jpg',
@@ -48,7 +70,7 @@ final List<User> mockUserList = [
     isDark: false,
   ),
   User(
-    id: 'u_003',
+    id: '3',
     name: 'Tahani Al-Jamil',
     email: 'tahani@example.com',
     avatar: 'https://randomuser.me/api/portraits/women/12.jpg',

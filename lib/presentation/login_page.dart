@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
-import './home_page.dart';
+import 'package:provider/provider.dart';
+import '../providers/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -13,10 +13,17 @@ class _LoginPageState extends State<LoginPage> {
   final pinController = TextEditingController();
   bool get isValid => pinController.text.trim().isNotEmpty;
 
+  bool isLoading = false;
   Future<void> login() async {
-    // TODO: Validation and move on\
-    final route = MaterialPageRoute(builder: (context) => HomePage());
-    Navigator.of(context).pushReplacement(route);
+    setState(() => isLoading = true);
+
+    final err = await context.read<AuthService>().login(pinController.text);
+    if (err != null && context.mounted) {
+      final snackbar = SnackBar(content: Text(err));
+      ScaffoldMessenger.of(context).showSnackBar(snackbar);
+    }
+
+    setState(() => isLoading = false);
   }
 
   @override
@@ -52,8 +59,8 @@ class _LoginPageState extends State<LoginPage> {
                   backgroundColor: Colors.black,
                   fixedSize: Size.fromHeight(48),
                 ),
-                onPressed: isValid ? login : null,
-                child: Text("Login"),
+                onPressed: isValid && !isLoading ? login : null,
+                child: isLoading ? CircularProgressIndicator() : Text("Login"),
               ),
             ],
           ),

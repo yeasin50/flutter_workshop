@@ -1,7 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import './login_page.dart';
+import '../providers/auth_service.dart';
 import '../models/user.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -9,7 +10,7 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = User.ui; //TODO: replace from login
+    final user = context.read<User?>() ?? User.ui;
 
     final textStyle = TextTheme.of(context);
     return Material(
@@ -24,9 +25,7 @@ class ProfilePage extends StatelessWidget {
               actions: [
                 IconButton(
                   onPressed: () {
-                    //TODO: Logout call
-                    final route = MaterialPageRoute(builder: (context) => LoginPage());
-                    Navigator.of(context).pushReplacement(route);
+                    context.read<AuthService>().logout();
                   },
                   icon: Icon(Icons.logout),
                 ),

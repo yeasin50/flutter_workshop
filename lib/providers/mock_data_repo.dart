@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:collection/collection.dart';
+
 import 'package:state_management_example_yt/models/item.dart';
 import 'package:state_management_example_yt/models/user.dart';
 
@@ -6,15 +8,21 @@ import 'package:state_management_example_yt/models/user.dart';
 class MockDataRepo {
   Future<User> login({required String pin}) async {
     await Future.delayed(Durations.long4);
-    return User.ui;
+
+    final user = mockUserList.firstWhereOrNull((e) {
+      return e.id == pin;
+    });
+
+    if (user == null) throw Exception("failed to login");
+    return user;
   }
 
   Future<List<Item>> fetchItems({int page = 0}) async {
     await Future.delayed(Durations.long4);
-    return [];
+    return [...mockItems];
   }
 
-  Future<void> checkout() async {
+  Future<void> checkout(User user, Set<Item> items) async {
     await Future.delayed(Durations.long4);
   }
 }
