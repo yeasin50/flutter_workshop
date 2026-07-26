@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:state_management_example_yt/providers/mock_data_repo.dart';
+import 'package:provider/provider.dart';
+
+import '/providers/carts_notifier.dart';
 import 'widgets/item_view.dart';
-import '../models/item.dart';
 import 'widgets/checkout_card_view.dart';
 
 class CartPage extends StatefulWidget {
@@ -16,24 +17,35 @@ class _CartPageState extends State<CartPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Cart items"), backgroundColor: Colors.lightGreen.shade300),
-      bottomNavigationBar: CheckoutCardView(),
-      body: GridView.builder(
-        itemCount: 8,
-        padding: EdgeInsetsDirectional.all(8),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          mainAxisSpacing: 16,
-          crossAxisSpacing: 16,
-        ),
-        itemBuilder: (context, index) {
-          //TODO: update with cart items
-          final items = [
-            ...mockItems.sublist(5),
-            ...mockItems.sublist(5).map((e) => e.copyWith(quantity: index)),
-          ].toSet().toList();
-          return ItemView(
-            item: items[index].copyWith(quantity: index),
-            onRemove: () {},
+      bottomNavigationBar: ProxyProvider<CartsNotifier, CheckoutData>(
+        update: (contex, t, v) {
+          final cart = Provider.of<CartsNotifier>(context);
+          return CheckoutData(totalAmount: cart.calucatePrice());
+        },
+        child: CheckoutCardView(), // should I clear it , task for std :)
+      ),
+      body: Consumer<CartsNotifier>(
+        builder: (context, data, _) {
+          final items = data.items;
+          if (items.isEmpty) return Center(child: Text("No item has been added"));
+
+          return GridView.builder(
+            itemCount: items.length,
+            padding: EdgeInsetsDirectional.all(8),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: 16,
+              crossAxisSpacing: 16,
+            ),
+            itemBuilder: (context, index) {
+              final item = items.elementAt(index);
+              return ItemView(
+                item: item,
+                onRemove: () {
+                  context.read<CartsNotifier>().remove(item);
+                },
+              );
+            },
           );
         },
       ),

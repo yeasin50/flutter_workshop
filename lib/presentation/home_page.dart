@@ -1,4 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:state_management_example_yt/providers/carts_notifier.dart';
+import 'package:state_management_example_yt/providers/products_notifier.dart';
 import '/providers/mock_data_repo.dart';
 
 import '../models/item.dart';
@@ -31,6 +36,14 @@ class _HomePageState extends State<HomePage> {
   int selectedIndex = 0;
 
   @override
+  void initState() {
+    super.initState();
+    scheduleMicrotask(() {
+      context.read<ProductsNotifier>().fetchProducts(refresh: true);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: IndexedStack(
@@ -57,6 +70,10 @@ class ItemListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int totalItem = context.select<CartsNotifier, int>((value) {
+      return value.count;
+    });
+
     return Column(
       crossAxisAlignment: .stretch,
       children: [
@@ -66,7 +83,13 @@ class ItemListView extends StatelessWidget {
           actions: [
             IconButton(
               onPressed: () {
-                final route = MaterialPageRoute(builder: (context) => CartPage());
+                final cartNotifier = context.read<CartsNotifier>();
+                final route = MaterialPageRoute(
+                  builder: (context) => ChangeNotifierProvider.value(
+                    value: cartNotifier,
+                    child: CartPage(),
+                  ),
+                );
                 Navigator.of(context).push(route);
               },
               icon: Row(
@@ -74,26 +97,38 @@ class ItemListView extends StatelessWidget {
                 mainAxisSize: .min,
                 children: [
                   Icon(Icons.shopping_basket_outlined),
-                  Text("3"), //TODO: update total cart ite
+                  Text(totalItem.toString()),
                 ],
               ),
             ),
           ],
         ),
-        Expanded(
-          child: GridView.builder(
-            padding: EdgeInsetsDirectional.all(8),
-            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 250,
-              mainAxisSpacing: 16,
-              crossAxisSpacing: 16,
-            ),
-            itemCount: mockItems.length, //TODO: replace with repo
-            itemBuilder: (context, index) {
-              final item = mockItems[index];
-              return ItemView(item: item, onAdd: () {});
-            },
-          ),
+        Consumer<ProductsNotifier>(
+          builder: (context, data, _) {
+            if (data.isLoading) return Center(child: CircularProgressIndicator());
+            if (data.hasErr) return Center(child: Text(data.error));
+
+            return Expanded(
+              child: GridView.builder(
+                padding: EdgeInsetsDirectional.all(8),
+                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 250,
+                  mainAxisSpacing: 16,
+                  crossAxisSpacing: 16,
+                ),
+                itemCount: data.items.length,
+                itemBuilder: (context, index) {
+                  final item = data.items[index];
+                  return ItemView(
+                    item: item,
+                    onAdd: () {
+                      context.read<CartsNotifier>().add(item);
+                    },
+                  );
+                },
+              ),
+            );
+          },
         ),
       ],
     );

@@ -7,7 +7,7 @@ import '../models/item.dart';
 class ProductsNotifier extends ChangeNotifier {
   ProductsNotifier({
     required this.repo,
-  }) : _isLoading = true;
+  }) : _isLoading = false;
 
   final MockDataRepo repo;
 
@@ -21,17 +21,23 @@ class ProductsNotifier extends ChangeNotifier {
   bool get hasErr => _error.isNotEmpty;
   String get error => _error;
 
-  Future<void> loadMore({bool refresh = false}) async {
+  Future<void> fetchProducts({bool refresh = false}) async {
     if (isLoading) return;
     _isLoading = true;
     _error = "";
     notifyListeners();
 
-    final result = await repo.fetchItems();
+    try {
+      final result = await repo.fetchItems();
 
-    if (refresh) _items.clear();
-    _items.addAll(result);
+      if (refresh) _items.clear();
+      _items.addAll(result);
+      _error = "";
+    } catch (e) {
+      _error = "failed to load";
+    }
 
+    _isLoading = false;
     notifyListeners();
   }
 }

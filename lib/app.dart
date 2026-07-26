@@ -6,6 +6,9 @@ import 'package:provider/provider.dart';
 import '../models/user.dart';
 import '../providers/auth_service.dart';
 import '../providers/mock_data_repo.dart';
+import '/providers/carts_notifier.dart';
+import '/providers/products_notifier.dart';
+
 import 'presentation/home_page.dart';
 import 'presentation/login_page.dart';
 
@@ -16,7 +19,8 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider(create: (context) => AuthService(MockDataRepo())),
+        Provider(create: (context) => MockDataRepo()),
+        Provider(create: (context) => AuthService(context.read<MockDataRepo>())),
       ],
       builder: (context, _) {
         return MaterialApp(
@@ -27,12 +31,18 @@ class MainApp extends StatelessWidget {
             create: (_) => context.read<AuthService>().authStateChanges,
             builder: (context, child) => Consumer<User?>(
               builder: (context, st, c) {
-                //NOTE: to read something,we need one down context, not the same
+                //NOTE: to read something,we need one down context, not the same.
+                // You might use AuthGuard something like a new widget
                 if (st == null) {
                   return const LoginPage();
                 }
-
-                return const HomePage();
+                return MultiProvider(
+                  providers: [
+                    ChangeNotifierProvider(create: (context) => ProductsNotifier(repo: context.read<MockDataRepo>())),
+                    ChangeNotifierProvider(create: (context) => CartsNotifier(repo: context.read<MockDataRepo>())),
+                  ],
+                  child: const HomePage(),
+                );
               },
             ),
           ),

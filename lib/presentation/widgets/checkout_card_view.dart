@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+class CheckoutData {
+  const CheckoutData({
+    this.totalAmount = 0,
+    this.discountPercent = 0,
+  });
+
+  final int totalAmount;
+  final double discountPercent;
+}
 
 class CheckoutCardView extends StatelessWidget {
   const CheckoutCardView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    int total = 120;
-
     return Material(
       color: Colors.greenAccent.shade200,
       child: Padding(
@@ -25,7 +34,7 @@ class CheckoutCardView extends StatelessWidget {
                   style: TextTheme.of(context).titleLarge,
                 ),
                 Text(
-                  total.toString(),
+                  context.watch<CheckoutData>().totalAmount.toString(),
                   style: TextTheme.of(context).titleLarge,
                 ),
               ],
