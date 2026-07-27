@@ -22,6 +22,11 @@ class MockDataRepo {
     return [...mockItems];
   }
 
+  Future<List<Item>> search({required String query}) async {
+    await Future.delayed(Durations.long4);
+    return [...mockItems.where((e) => e.name.toLowerCase().contains(query.toLowerCase()))];
+  }
+
   Future<void> checkout(User user, Set<Item> items) async {
     await Future.delayed(Durations.long4);
   }
