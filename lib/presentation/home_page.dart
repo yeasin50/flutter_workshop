@@ -1,10 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:state_management_example_yt/presentation/product_search_page.dart';
-import 'package:state_management_example_yt/presentation/widgets/search_field.dart';
+import '/presentation/product_search_page.dart';
+import '/presentation/widgets/search_field.dart';
 import '/providers/mock_data_repo.dart';
 
-import '../models/item.dart';
 import './profile_page.dart';
 import 'cart_page.dart';
 import 'widgets/item_view.dart';

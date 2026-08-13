@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:state_management_example_yt/providers/mock_data_repo.dart';
+import '/providers/mock_data_repo.dart';
 import 'widgets/item_view.dart';
-import '../models/item.dart';
 import 'widgets/checkout_card_view.dart';
 
 class CartPage extends StatefulWidget {
@@ -15,7 +14,7 @@ class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Cart items"), backgroundColor: Colors.lightGreen.shade300),
+      appBar: AppBar(title: Text("Cart items")),
       bottomNavigationBar: CheckoutCardView(),
       body: GridView.builder(
         itemCount: 8,

@@ -8,7 +8,6 @@ class CheckoutCardView extends StatelessWidget {
     int total = 120;
 
     return Material(
-      color: Colors.greenAccent.shade200,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
         child: Column(

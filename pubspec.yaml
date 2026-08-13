@@ -1,6 +1,5 @@
-name: state_management_example_yt
-description: 
-  Example code for yt video
+name: flutter_workshop
+description: Example Flutter code for YouTube videos
 
 publish_to: 'none'
 version: 0.1.0+1
@@ -12,6 +11,8 @@ dependencies:
   flutter:
     sdk: flutter
   cached_network_image: ^3.4.1
+  collection: ^1.19.1
+  cupertino_icons: ^1.0.2
 
 dev_dependencies:
   flutter_test:

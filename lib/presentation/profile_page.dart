@@ -32,7 +32,7 @@ class ProfilePage extends StatelessWidget {
                 ),
               ],
             ),
-            CircleAvatar(radius: 45, backgroundImage: CachedNetworkImageProvider(user.avatar)),
+            Center(child: CircleAvatar(radius: 45, backgroundImage: CachedNetworkImageProvider(user.avatar))),
             Text(user.name, style: textStyle.headlineSmall, textAlign: TextAlign.center),
             Text(
               user.email,
