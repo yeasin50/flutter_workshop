@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 
-import 'package:state_management_example_yt/models/item.dart';
-import 'package:state_management_example_yt/models/user.dart';
+import '/models/item.dart';
+import '/models/user.dart';
 
 /// temp  items management
 class MockDataRepo {
@@ -22,13 +22,13 @@ class MockDataRepo {
     return [...mockItems];
   }
 
+  Future<void> checkout(User user, Set<Item> items) async {
+    await Future.delayed(Durations.long4);
+  }
+
   Future<List<Item>> search({required String query}) async {
     await Future.delayed(Durations.long4);
     return [...mockItems.where((e) => e.name.toLowerCase().contains(query.toLowerCase()))];
-  }
-
-  Future<void> checkout(User user, Set<Item> items) async {
-    await Future.delayed(Durations.long4);
   }
 }
 
@@ -210,5 +210,48 @@ final _newItems = [
     name: "Colombo Sofa",
     price: 2499,
     image: "https://cdn.dummyjson.com/products/images/furniture/Annibale%20Colombo%20Sofa/1.png",
+  ),
+];
+
+final List<User> mockUserList = [
+  User(
+    id: '1',
+    name: 'Eleanor Shellstrop',
+    email: 'eleanor@example.com',
+    avatar: 'https://randomuser.me/api/portraits/women/68.jpg',
+    address: '321 Fake St, Phoenix, AZ',
+    isDark: true,
+  ),
+  User(
+    id: '2',
+    name: 'Chidi Anagonye',
+    email: 'chidi.a@example.com',
+    avatar: 'https://randomuser.me/api/portraits/men/32.jpg',
+    address: '456 Ethics Blvd, Paris, France',
+    isDark: false,
+  ),
+  User(
+    id: '3',
+    name: 'Tahani Al-Jamil',
+    email: 'tahani@example.com',
+    avatar: 'https://randomuser.me/api/portraits/women/12.jpg',
+    address: '101 Mansion Lane, London, UK',
+    isDark: true,
+  ),
+  User(
+    id: '4',
+    name: 'Jason Mendoza',
+    email: 'jason.bortles@example.com',
+    avatar: 'https://randomuser.me/api/portraits/men/46.jpg',
+    address: '789 Swamp Road, Jacksonville, FL',
+    isDark: true,
+  ),
+  User(
+    id: '5',
+    name: 'Janet Della-Denunzio',
+    email: 'janet.void@example.com',
+    avatar: 'https://randomuser.me/api/portraits/women/90.jpg',
+    address: 'The Void, Neutral Zone',
+    isDark: false,
   ),
 ];

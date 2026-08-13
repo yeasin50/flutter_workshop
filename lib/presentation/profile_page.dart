@@ -32,7 +32,7 @@ class ProfilePage extends StatelessWidget {
                 ),
               ],
             ),
-            CircleAvatar(radius: 45, backgroundImage: CachedNetworkImageProvider(user.avatar)),
+            Center(child: CircleAvatar(radius: 45, backgroundImage: CachedNetworkImageProvider(user.avatar))),
             Text(user.name, style: textStyle.headlineSmall, textAlign: TextAlign.center),
             Text(
               user.email,
@@ -66,7 +66,7 @@ class _ThemeSwitcherViewState extends State<ThemeSwitcherView> {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-      valueListenable: context.read<ThemeSwitcher>(),
+      valueListenable: context.read<ThemeNotifier>(),
       builder: (context, data, ch) {
         final bool isDark = data == ThemeMode.dark;
         return Column(
@@ -74,7 +74,7 @@ class _ThemeSwitcherViewState extends State<ThemeSwitcherView> {
             ListTile(
               title: Text("switch to ${isDark ? "light" : "dark"}"),
               trailing: IconButton(
-                onPressed: context.read<ThemeSwitcher>().toggle,
+                onPressed: context.read<ThemeNotifier>().toggle,
                 icon: Icon(isDark ? Icons.light_mode : Icons.dark_mode),
               ),
             ),

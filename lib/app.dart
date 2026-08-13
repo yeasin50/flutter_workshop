@@ -1,8 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'providers/theme_switcher.dart';
 import 'package:provider/provider.dart';
-import 'package:state_management_example_yt/providers/theme_switcher.dart';
 
 import '../models/user.dart';
 import '../providers/auth_service.dart';
@@ -22,13 +22,13 @@ class MainApp extends StatelessWidget {
       providers: [
         Provider(create: (context) => MockDataRepo()),
         Provider(create: (context) => AuthService(context.read<MockDataRepo>())),
-        ListenableProvider(create: (context) => ThemeSwitcher()),
+        ListenableProvider(create: (context) => ThemeNotifier()),
       ],
       builder: (context, _) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           scrollBehavior: ScrollBehavior().copyWith(dragDevices: PointerDeviceKind.values.toSet()),
-          themeMode: context.watch<ThemeSwitcher>().value,
+          themeMode: context.watch<ThemeNotifier>().value,
           theme: ThemeData.light(),
           darkTheme: ThemeData.dark(),
           home: StreamProvider<User?>(

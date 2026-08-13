@@ -16,7 +16,7 @@ class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Cart items"), backgroundColor: Colors.lightGreen.withAlpha(10)),
+      appBar: AppBar(title: Text("Cart items")),
       bottomNavigationBar: ProxyProvider<CartsNotifier, CheckoutData>(
         update: (contex, t, v) {
           final cart = Provider.of<CartsNotifier>(context);

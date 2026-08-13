@@ -5,12 +5,12 @@ import 'package:provider/provider.dart';
 
 import '/providers/carts_notifier.dart';
 import '/providers/products_notifier.dart';
+import '/presentation/product_search_page.dart';
+import '/presentation/widgets/search_field.dart';
 
 import './profile_page.dart';
 import 'cart_page.dart';
-import 'product_search_page.dart';
 import 'widgets/item_view.dart';
-import 'widgets/search_field.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -106,8 +106,7 @@ class ItemListView extends StatelessWidget {
         ),
         SearchField(
           onTap: (query) {
-            // TODO: navigate & search  with `value`
-            final route = ProductSearchPage.route(query);
+            final route = ProductSearchPage.route(query, context.read<CartsNotifier>());
             Navigator.of(context).push(route);
           },
         ),

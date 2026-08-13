@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import '/providers/carts_notifier.dart';
 import 'package:provider/provider.dart';
-import 'package:state_management_example_yt/models/item.dart';
+import '/models/item.dart';
 
 import '../providers/mock_data_repo.dart';
 import 'widgets/item_view.dart';
@@ -9,19 +10,24 @@ class ProductSearchPage extends StatefulWidget {
   const ProductSearchPage._(this.query);
   final String query;
 
-  static MaterialPageRoute route(String query) {
+  static MaterialPageRoute route(String query, CartsNotifier cart) {
     return MaterialPageRoute(
       builder: (context) {
-        return FutureProvider<List<Item>>(
-          initialData: [],
-          create: (context) {
-            //NOTE: I don't prefer using FutureProvider for not having loading & error flexibility
-            // use ChangeNotifier or even FutureBuilder just works fine but have to pass down the data
-            return context.read<MockDataRepo>().search(query: query);
-          },
-          child: ProductSearchPage._(query),
-          builder: (context, child) {
-            return child!;
+        return ChangeNotifierProvider.value(
+          value: cart,
+          builder: (context, _) {
+            return FutureProvider<List<Item>>(
+              initialData: [],
+              create: (context) {
+                //NOTE: I don't prefer using FutureProvider(prefer ChangeNotifier instead) for not having loading & error flexibility
+                // use ChangeNotifier or even FutureBuilder just works fine but have to pass down the data
+                return context.read<MockDataRepo>().search(query: query);
+              },
+              child: ProductSearchPage._(query),
+              builder: (context, child) {
+                return child!;
+              },
+            );
           },
         );
       },
@@ -53,7 +59,7 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                 return ItemView(
                   item: item,
                   onAdd: () {
-                    //TODO: add to cart on provider DO  IT :)
+                    context.read<CartsNotifier>().add(item);
                   },
                 );
               },

@@ -1,4 +1,4 @@
-package com.example.state_management_example_yt
+package com.example.flutter_workshop
 
 import io.flutter.embedding.android.FlutterActivity
 
