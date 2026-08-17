@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'providers/key_value_db.dart';
 import 'providers/theme_switcher.dart';
 import 'package:provider/provider.dart';
 
@@ -21,36 +22,46 @@ class MainApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         Provider(create: (context) => MockDataRepo()),
+        Provider<AppPreferences>(create: (context) => SharedPreferencesAppPreferences()),
         Provider(create: (context) => AuthService(context.read<MockDataRepo>())),
-        ListenableProvider(create: (context) => ThemeNotifier()),
+        ListenableProvider(create: (context) => ThemeNotifier(preferences: context.read<AppPreferences>())),
       ],
       builder: (context, _) {
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          scrollBehavior: ScrollBehavior().copyWith(dragDevices: PointerDeviceKind.values.toSet()),
-          themeMode: context.watch<ThemeNotifier>().value,
-          theme: ThemeData.light(),
-          darkTheme: ThemeData.dark(),
-          home: StreamProvider<User?>(
-            initialData: null,
-            create: (_) => context.read<AuthService>().authStateChanges,
-            builder: (context, child) => Consumer<User?>(
-              builder: (context, st, c) {
-                //NOTE: to read something,we need one down context, not the same.
-                // You might use AuthGuard something like a new widget
-                if (st == null) {
-                  return const LoginPage();
-                }
-                return MultiProvider(
-                  providers: [
-                    ChangeNotifierProvider(create: (context) => ProductsNotifier(repo: context.read<MockDataRepo>())),
-                    ChangeNotifierProvider(create: (context) => CartsNotifier(repo: context.read<MockDataRepo>())),
-                  ],
-                  child: const HomePage(),
-                );
-              },
-            ),
-          ),
+        print("rebuilding");
+        return FutureBuilder(
+          future: context.read<ThemeNotifier>().load(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) return Center(child: CircularProgressIndicator());
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              scrollBehavior: ScrollBehavior().copyWith(dragDevices: PointerDeviceKind.values.toSet()),
+              themeMode: context.watch<ThemeNotifier>().value,
+              theme: ThemeData.light(),
+              darkTheme: ThemeData.dark(),
+              home: StreamProvider<User?>(
+                initialData: null,
+                create: (_) => context.read<AuthService>().authStateChanges,
+                builder: (context, child) => Consumer<User?>(
+                  builder: (context, st, c) {
+                    //NOTE: to read something,we need one down context, not the same.
+                    // You might use AuthGuard something like a new widget
+                    if (st == null) {
+                      return const LoginPage();
+                    }
+                    return MultiProvider(
+                      providers: [
+                        ChangeNotifierProvider(
+                          create: (context) => ProductsNotifier(repo: context.read<MockDataRepo>()),
+                        ),
+                        ChangeNotifierProvider(create: (context) => CartsNotifier(repo: context.read<MockDataRepo>())),
+                      ],
+                      child: const HomePage(),
+                    );
+                  },
+                ),
+              ),
+            );
+          },
         );
       },
     );
