@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_workshop/providers/key_value_db.dart';
+import 'app_preferences.dart';
 
 class ThemeNotifier extends ValueNotifier<ThemeMode> {
   ThemeNotifier({required this.preferences, ThemeMode? mode}) : super(mode ?? ThemeMode.dark);

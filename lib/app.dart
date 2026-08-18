@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'providers/key_value_db.dart';
+import 'providers/app_preferences.dart';
 import 'providers/theme_switcher.dart';
 import 'package:provider/provider.dart';
 
