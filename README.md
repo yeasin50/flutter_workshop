@@ -56,3 +56,23 @@ git switch local_db/01-key_value
 [![Provider workshop thumbnail](./_resources/shared_preferenc_thumb.png)](https://youtu.be/qi6Jpf6EmB8)
 
 <br>
+
+## SQflite: Todo application
+
+To star implementing start from  
+ [`sqflite_start`](https://github.com/yeasin50/flutter_workshop/tree/sqflite_start) branch.
+
+The final code of sqflite task application stays
+[`sqlfite_basic_end`](https://github.com/yeasin50/flutter_workshop/tree/local_db/sqlfite_basic_end) branch.
+
+```cmd
+git switch sqflite_start
+```
+
+**🎥 Follow Along**
+
+[▶️ Watch the Provider Workshop on YouTube](https://youtu.be/4F_m2F4fRPo)
+
+[![Provider workshop thumbnail](./_resources/sqlfite_basic.png)](https://youtu.be/4F_m2F4fRPo)
+
+<br>
