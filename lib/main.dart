@@ -1,6 +1,8 @@
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 
+import 'package:url_launcher/url_launcher.dart';
+
 void main() {
   runApp(DeepLinkExample());
 }
@@ -20,10 +22,10 @@ class DeepLinkExample extends StatelessWidget {
 
 /// The route configuration.
 final GoRouter _router = GoRouter(
-  initialLocation: '/',
+  initialLocation: '/flutter_workshop',
   routes: <RouteBase>[
     GoRoute(
-      path: '/',
+      path: '/flutter_workshop',
       builder: (BuildContext context, GoRouterState state) {
         return const HomeScreen();
       },
@@ -46,7 +48,18 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Deeplink example")),
+      appBar: AppBar(
+        title: Text("Deeplink example"),
+        actions: [
+          IconButton(
+            onPressed: () {
+              final url = "https://youtu.be/bo_aObojqJc?si=0YwWWlhuJTsZZS4u";
+              launchUrl(Uri.parse(url));
+            },
+            icon: Icon(Icons.video_library_rounded),
+          ),
+        ],
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: .center,
@@ -54,7 +67,7 @@ class HomeScreen extends StatelessWidget {
           children: List.generate(
             (5),
             (i) => ElevatedButton(
-              onPressed: () => context.replace('/product/$i'),
+              onPressed: () => context.replace('/flutter_workshop/product/$i'),
               child: Text('Check product $i'),
             ),
           ),
